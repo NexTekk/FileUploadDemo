@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+<br />
+<div class="panel panel-default" id="upload-container">
+    <div class="panel-heading">
+        <strong>File Uploader</strong>
+        <div class="pull-right">
+            <button class="btn btn-default" id="btn-browse-folders"><span class="glyphicon glyphicon-folder-open"></span> Select Folder</button>
+            <button class="btn btn-default" id="btn-browse-files"><span class="glyphicon glyphicon-file"></span> Select Files</button>
+            <button class="btn btn-default" id="btn-browse-images"><span class="glyphicon glyphicon-picture"></span> Select Images</button>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="panel-body panel-content" id="uploader-stage">
+        <div rv-if="notSupported" class="alert alert-danger" role="alert">Flow.js is not supported on this browser. Please try another modern browser.</div>
+
+        <table class="table table-striped table-condensed">
+            <tbody>
+                <tr rv-each-file="files">
+                    <td colspan="5">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar progress-bar-striped" role="progressbar" rv-aria-valuenow="file.percentUploaded" aria-valuemin="0" aria-valuemax="100" rv-style="file.percentUploaded | width">
+                                <span class="pull-left" style="padding-left: 10px;">{file.name}</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr rv-each-file="uploadedFiles" rv-class-success="file.selected">
+                    <td><input type="checkbox" rv-checked="file.selected" /></td>
+                    <td><span rv-class="file.fileImageClass"></span></td>
+                    <td>{file.name}</td>
+                    <td>{file.displaySize}</td>
+                    <td>{file.createdDateUtc | timeAgo}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="panel-footer">
+        <div class="pull-left">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" rv-checked="toAzure"> Upload to Azure
+                </label>
+            </div>
+        </div>
+        <div class="pull-right">
+            <button class="btn btn-default" rv-on-click="pauseDownload">
+                <span rv-hide="paused" class="glyphicon glyphicon-pause"></span>
+                <span rv-show="paused" class="glyphicon glyphicon-play"></span>
+            </button>
+            <button class="btn btn-default" rv-on-click="stopDownload"><span class="glyphicon glyphicon-stop"></span></button>
+            <button class="btn btn-danger" rv-on-click="deleteFiles"><span class="glyphicon glyphicon-trash"></span></button>
+            <button class="btn btn-default" rv-on-click="downloadFiles"><span class="glyphicon glyphicon-download-alt"></span></button>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
